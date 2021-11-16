@@ -1,0 +1,31 @@
+@use 'base/vars' as *
+@use 'abstracts/mixins' as *
+.search
+  flex: 1 1 60rem
+  position: relative
+  display: flex
+  max-width: 60rem
+  color: $color__txt
+  border-radius: 0.5rem
+  overflow: hidden
+  select, input, button
+    padding: 1em
+    background: $color__accent
+    border: 0
+    color: currentColor
+  select
+    cursor: pointer
+    transition: $trans__txt
+    @include hover
+      &:hover
+        opacity: $alpha__links
+  input
+    flex: 1
+    padding-left: 1em
+    box-shadow: 0px 0px 3px 1px $color__bg inset
+  label
+    position: absolute
+    clip: rect(1px, 1px, 1px, 1px)
+    height: 1px
+    width: 1px
+    overflow: hidden

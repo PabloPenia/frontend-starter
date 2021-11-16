@@ -1,0 +1,45 @@
+@use 'base/vars' as *
+#tabs
+  overflow: hidden
+  border-radius: 2rem 2rem 0 0
+  .active
+    border-bottom: 4px solid $color__bg
+    font-weight: bold
+  header
+    display: flex
+    margin: 2em 0
+    button
+      flex: 1
+      padding: 0.5em
+      background: unset
+      border: 0
+      cursor: pointer
+      font-family: $typo__headings
+      font-size: 2rem
+      font-weight: bold
+      text-transform: uppercase
+      transition: 0.3s linear
+  section
+    max-height: calc( 100vh - 6rem )
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr))
+    grid-auto-rows: 1fr
+    place-content: center
+    gap: 1em
+    overflow: hidden
+  article
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    text-align: center
+    animation: bounce 4s
+  img
+    max-width: 25rem
+  h3
+    padding: 0.5em 0
+  p
+    span
+      margin-left: 1em
+      text-decoration: line-through
+  .btn
+    margin: 1em auto

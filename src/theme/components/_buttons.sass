@@ -1,0 +1,12 @@
+@use 'abstracts/mixins' as *
+@use 'base/vars' as *
+button
+  transition: $trans__txt
+  @include hover
+    &:hover
+      opacity: $alpha__links
+a.btn
+  display: block
+  padding: 0.5em 2em
+  background-color: #666
+  color: #fff

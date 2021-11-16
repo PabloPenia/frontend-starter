@@ -1,0 +1,161 @@
+@use 'base/vars' as *
+$anim-delay: 6s
+.slideshow
+  position: relative
+  width: 100%
+  height: 100vh
+  overflow: hidden
+  background: $color__bg
+  li
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background: 50% 50% / cover no-repeat
+    opacity: 0
+    animation: imgAnim 36s linear infinite 0s
+    h3
+      position: absolute
+      bottom: 3rem
+      left: 0
+      width: 100%
+      padding: 0 0.5em
+      color: rgba(255,255,255,0.8)
+      opacity: 0
+      font-family: $typo__headings
+      font-size: 8rem
+      text-align: center
+      text-transform: capitalize
+      animation: titleAnim 36s linear infinite 0s
+  li:nth-child(3n+2) h3
+    animation: titleAnim2 36s linear infinite 0s
+  li:nth-child(3n+3) h3
+    animation: titleAnim3 36s linear infinite 0s
+  li:nth-child(1)
+    background: url(images/quality-640.jpg)
+  li:nth-child(2)
+    background-image: url(images/price-640.jpg)
+    &, & h3
+      animation-delay: $anim-delay
+  li:nth-child(3)
+    background-image: url(images/taste-640.jpg)
+    &, & h3
+      animation-delay: $anim-delay * 2
+  li:nth-child(4)
+    background-image: url(images/aroma-640.jpg)
+    &, & h3
+      animation-delay: $anim-delay * 3
+  li:nth-child(5)
+    background-image: url(images/delivery-640.jpg)
+    &, & h3
+      animation-delay: $anim-delay * 4
+  li:nth-child(6)
+    background-image: url(images/discount-640.jpg)
+    &, & h3
+      animation-delay: $anim-delay * 5
+
+@keyframes imgAnim 
+  0%
+    opacity: 0
+    transform: scale(1)
+  5%
+    opacity: 1
+  25%
+    opacity: 1
+  30%
+    opacity: 0
+    transform: scale(1.1)
+  100%
+    opacity: 0
+    transform: scale(1)
+
+@keyframes titleAnim 
+  0%
+    opacity: 0
+    transform: translateY(-300%)
+  8%
+    opacity: 1
+    transform: translateY(0%)
+  17%
+    opacity: 1
+    transform: translateY(0%)
+  19%
+    opacity: 0
+    transform: translateY(100%)
+  25%
+    opacity: 0 
+  100%
+    opacity: 0 
+
+@keyframes titleAnim2 
+  0%
+    opacity: 0
+    transform: translateY(200px)
+  8%
+    opacity: 1
+    transform: translateY(0px)
+  17%
+    opacity: 1
+    transform: scale(1)
+  19%
+    opacity: 0 
+  25%
+    opacity: 0
+    transform: scale(10)
+  100%
+    opacity: 0 
+
+@keyframes titleAnim3 
+  0%
+    opacity: 0
+    transform: translateX(200px)
+  8%
+    opacity: 1
+    transform: translateX(0px)
+  17%
+    opacity: 1
+    transform: translateX(0px)
+  19%
+    opacity: 0
+    transform: translateX(-400px)
+  25%
+    opacity: 0 
+  100%
+    opacity: 0
+
+@media (min-width: 641px)
+  .slideshow .overlay h3
+    font-size: 10rem
+  .slideshow li:nth-child(1)
+    background-image: url(images/quality-1280.jpg)
+  .slideshow li:nth-child(2)
+    background-image: url(images/price-1280.jpg)
+  .slideshow li:nth-child(3)
+    background-image: url(images/taste-1280.jpg)
+  .slideshow li:nth-child(4)
+    background-image: url(images/aroma-1280.jpg)
+  .slideshow li:nth-child(5)
+    background-image: url(images/delivery-1280.jpg)
+  .slideshow li:nth-child(6)
+    background-image: url(images/discount-1280.jpg)
+@media (min-width: 960px)
+  .slideshow .overlay h3
+    font-size: 14rem
+@media (min-width: 1281px)
+  .slideshow .overlay h3
+    padding: 0 3rem
+    font-size: 16rem
+    line-height: 12rem
+  .slideshow li:nth-child(1)
+    background-image: url(images/quality-1920.jpg)
+  .slideshow li:nth-child(2)
+    background-image: url(images/price-1920.jpg)
+  .slideshow li:nth-child(3)
+    background-image: url(images/taste-1920.jpg)
+  .slideshow li:nth-child(4)
+    background-image: url(images/aroma-1920.jpg)
+  .slideshow li:nth-child(5)
+    background-image: url(images/delivery-1920.jpg)
+  .slideshow li:nth-child(6)
+    background-image: url(images/discount-1920.jpg)

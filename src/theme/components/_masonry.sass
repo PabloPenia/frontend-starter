@@ -1,0 +1,75 @@
+@use 'abstracts/mixins' as *
+@use 'base/vars' as *
+// Masonry module as header from components/masonry
+.masonry
+  min-height: calc( 100vh - 9rem )
+  overflow: hidden
+  padding: 2em $sp__sides
+  display: flex
+  flex-wrap: wrap
+  gap: 0.5em
+  background-color: $color__bg
+  .item
+    @include bgCover()
+    flex: 1
+    min-width: 25rem
+    min-height: 15rem
+    transition: transform 0.3s ease-in
+    &:nth-child(2)
+      background-image: url(https://unsplash.com/photos/ToLMORRb97Q/download?force=true&w=640)
+    &:nth-child(3)
+      background-image: url(https://unsplash.com/photos/YQbJLyY0hFU/download?force=true&w=640)
+    &:nth-child(4)
+      background-image: url(https://unsplash.com/photos/TT-ROxWj9nA/download?force=true&w=640)
+    &:nth-child(5)
+      background-image: url(https://unsplash.com/photos/TyaZZhYkio0/download?force=true&w=640)
+    &:nth-child(6)
+      background-image: url(https://unsplash.com/photos/HqtYwlY9dxs/download?force=true&w=640)
+    div
+      display: flex
+      flex-direction: column
+      place-content: center
+      background-color: rgba(0, 0, 0, 0.5)
+      color: #fff
+      text-transform: uppercase
+      text-align: center
+      height: 100%
+    h2
+      font-size: 4rem
+      & + p:after
+        content: ""
+        display: block
+        width: 50%
+        height: 3px
+        background: #fff
+        margin: 0.5em auto
+    h3
+      font-size: 1.6rem
+    h3 + p
+      margin-top: 0.5em
+      font-size: 2.5rem
+      font-weight: bolder
+  .featured
+    flex-basis: 60rem
+    animation: featuredBg infinite 15s
+      
+      
+@keyframes featuredBg
+   0%,100%
+     background-image: url("https://unsplash.com/photos/AhfrA5VQNpM/download?force=true&w=640")
+   25%
+     background-image: url("https://unsplash.com/photos/58FCfyUti_w/download?force=true&w=640")
+   50%
+     background-image: url("https://unsplash.com/photos/t9itdFXLFXc/download?force=true&w=640")
+   75%
+     background-image: url("https://unsplash.com/photos/NOpsC3nWTzY/download?force=true&w=640")
+
+@include hover
+  .masonry .item:hover
+    opacity: $alpha__links
+@include no-hover
+  .masonry .item:active
+    transform: scale(1.1)
+@include breakpoint('medium')
+  .masonry h2
+    font-size: 8rem

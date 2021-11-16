@@ -1,0 +1,33 @@
+-
+  const basedir = 'http://127.0.0.1:5500/dist/'
+  const siteName = "Pug/Sass Starter"
+  let page
+  let pageTitle
+
+//- FONTS
+-
+  const googleFonts = true
+  let gFonts = [
+    {font: 'Lato'},
+    {font: 'Raleway', weight: 600}
+  ]
+  function fontsLink() {
+    let output = 'https://fonts.googleapis.com/css2?'
+    for(let i = 0; i < gFonts.length; i++) {
+      output += `family=${gFonts[i].font}`
+      if(gFonts[i].hasOwnProperty(weight)) {
+        output += `:wght@${gFonts[i].weight}`
+      }
+      output += '&'
+    }
+    output += 'display=swap'
+    return output
+  }
+  
+//- CATEGORIES
+-
+  const cat = [
+    {name: 'Link 1', link: '#'},
+    {name: 'Link 2', link: '#'},
+    {name: 'Link 3', link: '#'}
+  ]

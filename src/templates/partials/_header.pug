@@ -1,0 +1,11 @@
+header#master-header
+  .brand
+    +link(siteName, 'index.html')
+  nav#navbar(role="Navigation")
+    button#menu(aria-expanded="false")
+      +icon('menu-icon')
+      span Menu
+    ul
+      each item in cat
+        li
+          +link(item.name, item.link)

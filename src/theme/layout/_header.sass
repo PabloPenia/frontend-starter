@@ -1,0 +1,76 @@
+@use 'abstracts/mixins' as *
+@use 'base/helpers' as *
+@use 'base/vars' as *
+#master-header
+  @extend .flex
+  @extend .dark
+  gap: 1em
+  width: 100%
+  padding: 1em $sp__sides
+  align-items: center
+  a
+    @extend .dark__links
+    font-family: $typo__headings
+    text-transform: uppercase
+  .brand a
+    padding-left: 1em
+    font-weight: bold
+// Navigation
+.js #navbar
+  @extend .flex
+  position: relative
+  > button
+    & + ul
+      display: block
+      width: 20rem
+      position: absolute
+      top: 4.5rem
+      right: -100%
+      z-index: 100
+      padding: 1em
+      background: $color__bg
+      opacity: 0
+      transition: $trans__txt
+      li
+        padding: 0.2em 0
+        @include hover
+          &:hover
+            background: $color__accent
+    &.active + ul
+      display: block
+      opacity: 1
+      right: 0
+    &#menu.active .icon
+      transform: rotate(-90deg)
+    span + span
+      position: absolute
+      clip: rect(1px, 1px, 1px, 1px)
+      padding: 0
+      border: 0
+      overflow: hidden
+  //     
+  //     
+    // a
+    //   padding: 0.5em
+    //   font-size: 2rem
+    //   letter-spacing: 0.3rem
+    //   @include hover
+    //     border-bottom: 3px solid transparent
+    //     &:hover
+    //       opacity: 1
+    //       border-color: currentColor
+    //   @include breakpoint('smaller')
+    //     font-size: 3rem
+    // & + ul.active
+      // opacity: 1
+      // right: 0
+
+//accessibility
+// .js #navbar ul
+//   display: none
+//   @include breakpoint('medium')
+//     display: block
+// .js #navbar button
+//   display: inline-block
+//   @include breakpoint('medium')
+//     display: none

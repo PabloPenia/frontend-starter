@@ -1,0 +1,13 @@
+mixin link(name, href, target)
+  -
+    isIcon = name.toLowerCase().indexOf('-icon') !== -1
+    href = href || '#'
+  a(
+    href= href,
+    class=(isIcon ? 'icon' : false),
+    target= (target ? '_blank' : false)
+  )
+    if (isIcon)
+      +svg(name) 
+    else
+      | #{name}

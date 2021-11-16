@@ -1,0 +1,15 @@
+mixin search
+  form.search(action="#")
+    label(for="search-filter") Choose a pet:
+    select(name="search-filter" id="search-filter")
+        option(value="all") All
+        option(value="kids") Kids
+        option(value="men") Men
+        option(value="women") Women
+        option(value="footwear") footwear
+    label(for="search__fld") Search
+    input(type="search", id="search__fld", placeholder="Find a product")
+    button
+      .icon
+        svg
+          use(xlink:href="#search-icon")
