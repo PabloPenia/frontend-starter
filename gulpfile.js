@@ -96,12 +96,13 @@ function copyLib() {
 }
 
 function themeBuilder() {
-  const plugins = [postcssNormalize(), autoprefixer()] /* , cssnano() */
+  const plugins = [postcssNormalize(), autoprefixer()]
+  /* const plugins = [postcssNormalize(), autoprefixer(), cssnano()] */
   return src(paths.theme.src)
     .pipe(sourcemaps.init())
     .pipe(sass().on("error", sass.logError))
     .pipe(postcss(plugins))
-    .pipe(rename({ suffix: ".min" }))
+    /* .pipe(rename({ suffix: ".min" })) */
     .pipe(sourcemaps.write("."))
     .pipe(dest(paths.theme.dest))
 }
