@@ -1,35 +1,39 @@
 include ./abstracts/_config
-include ./abstracts/mixins/_common
+include ./abstracts/_common
 doctype html
 html(lang="en").no-js
   head
     meta(charset="UTF-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    if (googleFonts)
+    if (FONTS.google)
       link(rel="preconnect", href="https://fonts.googleapis.com")
       link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
       link(rel="stylesheet", href!=`${fontsLink()}`)
-    link(rel="stylesheet", href=`${basedir}assets/theme.min.css?cache=123345`)
-    script(src=`${basedir}assets/vendor/modernizr.js`)
+    link(rel="stylesheet", href=`${root}assets/theme.min.css?cache=123345`)
+    script(src=`${root}assets/vendor/modernizr.js`, defer)
+    //- script(src=`${root}assets/vendor/jquery-3.6.0.min.js`, defer)
+    //- script(src=`${root}assets/vendor/font-awesome.js`, defer)
     block head
       if (page || pageTitle)
         unless (pageTitle)
           - pageTitle = page
-        title #{siteName} | #{pageTitle}
+        title #{pageTitle} | #{CONFIG.siteName}
       else
-        title #{siteName}
+        title #{CONFIG.siteName}
 
   body
     include ../svg/sprite.svg
     block header
       include ./partials/_header
     block main
-      case page
-        default
-          unless pageTitle
-            - pageTitle = page
-          h1= pageTitle
+      main
+        case page
+          default
+            unless pageTitle
+              - pageTitle = page
+            h1= pageTitle
+            block content
     block footer
       include ./partials/_footer
-      script(src=`${basedir}assets/app.min.js`)
+      script(src=`${root}assets/app.min.js`, defer)

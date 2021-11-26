@@ -1,11 +1,11 @@
 header#master-header
   .brand
-    +link(siteName, 'index.html')
+    +link(CONFIG.siteName, 'index.html')
   nav#navbar(role="Navigation")
-    button#menu(aria-expanded="false")
+    button.menuBtn(aria-expanded="false")
       +icon('menu-icon')
       span Menu
-    ul
-      each item in cat
+    ul 
+      each item in CONFIG.cat
         li
-          +link(item.name, item.link)
+          +link(item.name, item.href)

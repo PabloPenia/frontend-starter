@@ -1,3 +1,7 @@
+// keep scss format for better readability of maps
+// use:
+// h1
+//   color: color('blue', 'lighter')
 $palette: (
   'red': (
     'lighter': hsl(0, 100%, 90%),
@@ -40,7 +44,8 @@ $palette: (
     'light': hsl(219, 19%, 70%),
     'base': hsl(219, 19%, 50%),
     'dark': hsl(219, 19%, 20%),
-    'darker': hsl(220, 18%, 10%)
+    'darker': hsl(220, 18%, 10%),
+    'darkest': hsl(220, 18%, 5%)
   ),
   'magenta': (
     'lighter': hsl(300, 100%, 90%),

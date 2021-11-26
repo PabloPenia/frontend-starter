@@ -1,1 +1,5 @@
 footer#footer
+  ul 
+    each item in CONFIG.cat
+      li
+        +link(item.name, item.href)

@@ -1,0 +1,7 @@
+{
+  "google": true,
+  "gFonts": [
+    {"font": "Lato"},
+    {"font": "Raleway", "weight": 600}
+  ]
+}

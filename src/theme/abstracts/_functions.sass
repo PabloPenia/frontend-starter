@@ -1,0 +1,18 @@
+// Getting colors
+@use 'sass:map'
+@use 'color'
+@function color($color,$tone)
+
+  @if map.has-key(color.$palette,$color)
+    $color: map.get(color.$palette,$color)
+
+    @if map.has-key($color,$tone)
+      $tone: map.get($color,$tone)
+      @return $tone
+
+    @return null
+
+  @return null
+// use:
+// h1
+//   color: color('blue', 'lighter')

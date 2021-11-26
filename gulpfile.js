@@ -1,50 +1,48 @@
 const { src, dest, watch, series, parallel } = require("gulp")
-const concat = require("gulp-concat")
-// const cheerio = require("gulp-cheerio") // Jquery syntax
-// const imagemin = require("gulp-imagemin")
-const pug = require("gulp-pug") //temlating
-const plumber = require("gulp-plumber")
-const rename = require("gulp-rename")
-const replace = require("gulp-replace")
+const autoprefixer = require("autoprefixer")
 const sass = require("gulp-sass")(require("sass"))
 sass.compiler = require("sass") // fix for dart-sass
-const sourcemaps = require("gulp-sourcemaps")
-// const svgmin = require("gulp-svgmin") // svg minification
-// const svgstore = require("gulp-svgstore") // svg combine
-const terser = require("gulp-terser")
-//postCSS stuff
-const postcss = require("gulp-postcss")
-const autoprefixer = require("autoprefixer")
+const concat = require("gulp-concat")
 // const cssnano = require("cssnano")
+const data = require("gulp-data")
+const fs = require("fs")
+const path = require('path')
+const merge = require('gulp-merge-json')
+const plumber = require("gulp-plumber")
+const postcss = require("gulp-postcss")
 const postcssNormalize = require("postcss-normalize")
-// Files Paths
+const pug = require("gulp-pug")
+const rename = require("gulp-rename")
+const replace = require("gulp-replace")
+const sourcemaps = require("gulp-sourcemaps")
+const terser = require("gulp-terser")
+
 const paths = {
   cache: {
-    src: ["./dist/**/*.html"],
-    dest: "./dist/",
+    src: "./dist/**/*.html",
+    dest: "./dist/"
   },
-  images: {
-    src: ["./src/images/**/*"],
-    svg: ["./src/svg/**/*"],
-    dest: "./dist/assets/images/",
+  data: {
+    src: "./src/data/files/**/*.json",
+    dest: "./src/data",
+    merged: "./src/data/data.json"
   },
-
   scripts: {
-    src: ["./src/scripts/**/_*.js"],
+    src: "./src/scripts/**/_*.js",
     dest: "./dist/assets/",
-    srcVendor: ["./src/scripts/**/!(_)*.js"],
-    destVendor: "./dist/assets/",
+    srcVendor: "./src/scripts/**/!(_)*.js",
+    destVendor: "./dist/assets/"
   },
+  svg: "./src/svg/**/*.svg",
   theme: {
-    /* +(scss|sass) */
-    src: ["./src/theme/**/*.{scss,sass}"],
-    dest: "./dist/assets/",
+    src: "./src/theme/**/*.{scss,sass}",
+    dest: "./dist/assets/"
   },
   template: {
-    src: ["./src/templates/pages/!(_)*.pug"],
+    src: "./src/templates/pages/!(_)*.pug",
     dest: "./dist/",
-    watch: ["./src/templates/**/*.pug"],
-  },
+    watch: "./src/templates/**/*.pug"
+  }
 }
 
 function cacheCleaner() {
@@ -53,14 +51,30 @@ function cacheCleaner() {
     .pipe(dest(paths.cache.dest))
 }
 
-// function imgOptimizer() {
-//   return src(paths.images.src)
-//     .pipe(imagemin().on("error", (error) => console.log(error)))
-//     .pipe(dest(paths.images.dest))
-// }
+function dataMerge () {
+  return src(paths.data.src)
+      .pipe(merge({
+          fileName: 'data.json',
+          edit: (json, file) => {
+              // Extract the filename and strip the extension
+              let filename = path.basename(file.path),
+                  primaryKey = filename.replace(path.extname(filename), '');
+
+              // Set the filename in CAPS as the primary key for our JSON data
+              let data = {};
+              data[primaryKey.toUpperCase()] = json;
+
+              return data;
+          }
+      }))
+      .pipe(dest(paths.data.dest));
+}
 
 function pageBuilder() {
   return src(paths.template.src)
+    .pipe(data(function() {
+      return JSON.parse(fs.readFileSync(paths.data.merged))
+    }))
     .pipe(plumber())
     .pipe(pug({ pretty: true }))
     .pipe(dest(paths.template.dest))
@@ -78,11 +92,11 @@ function scriptsBuilder() {
 
 function copyLib() {
   return src(paths.scripts.srcVendor)
-  .pipe(dest(paths.scripts.destVendor))
+    .pipe(dest(paths.scripts.destVendor))
 }
 
 function themeBuilder() {
-  var plugins = [postcssNormalize(), autoprefixer()] /* , cssnano() */
+  const plugins = [postcssNormalize(), autoprefixer()] /* , cssnano() */
   return src(paths.theme.src)
     .pipe(sourcemaps.init())
     .pipe(sass().on("error", sass.logError))
@@ -92,48 +106,24 @@ function themeBuilder() {
     .pipe(dest(paths.theme.dest))
 }
 
-// function svgSpriter() {
-//   return src(paths.images.svg)
-//     .pipe(svgmin())
-//     .pipe(
-//       svgstore({
-//         fileName: "sprite.svg",
-//       })
-//     )
-//     .pipe(
-//       cheerio({
-//         run: function ($) {
-//           $("[fill]").removeAttr("fill")
-//         },
-//         parserOptions: {
-//           xmlMode: true,
-//         },
-//       })
-//     )
-//     .pipe(dest(paths.images.dest))
-// }
-
 function watcher() {
-  // watch(paths.images.src, imgOptimizer);
-  // watch(paths.images.svg, svgSpriter);
-  watch(paths.scripts.src, parallel(scriptsBuilder, copyLib, cacheCleaner))
+  watch(paths.data.src, series(dataMerge, pageBuilder, cacheCleaner))
+  watch(paths.scripts.src, series(parallel(scriptsBuilder, copyLib), cacheCleaner))
+  watch(paths.svg, series(pageBuilder, cacheCleaner))
+  watch(paths.theme.src, series(themeBuilder, cacheCleaner))
   watch(paths.template.watch, series(pageBuilder, cacheCleaner))
-  watch(paths.theme.src, parallel(themeBuilder, cacheCleaner))
 }
 
-// exports.imgOptimizer = imgOptimizer
+exports.dataMerge = dataMerge
 exports.pageBuilder = pageBuilder
 exports.cacheCleaner = cacheCleaner
 exports.scriptsBuilder = scriptsBuilder
 exports.copyLib = copyLib
-// exports.svgSpriter = svgSpriter
 exports.themeBuilder = themeBuilder
 exports.watcher = watcher
 exports.default = series(
+  dataMerge,
   parallel(scriptsBuilder, copyLib, pageBuilder, themeBuilder),
   cacheCleaner,
   watcher
 )
-// exports.default = series(
-//   parallel(imgOptimizer, svgSpriter, pageBuilder, scriptsBuilder, themeBuilder),
-//   cacheCleaner, watcher);

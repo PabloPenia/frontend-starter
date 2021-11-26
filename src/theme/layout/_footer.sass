@@ -1,6 +1,16 @@
-@use 'base/helpers' as *
+@use 'base/vars' as *
+@use 'base/mixins' as *
+@use 'base/extends' as *
 #footer
-  @extend .dark
-  font-size: 1.8rem
+  @extend %dark
+  padding: 1em $sp__sides
   a
-    @extend .dark__links
+    @extend %dark__links
+    font-family: $typo__headings
+    text-transform: uppercase
+    @include hover
+      &:hover
+        opacity: $alpha__7
+  ul
+    @extend %flex
+    justify-content: flex-end

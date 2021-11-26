@@ -1,29 +1,11 @@
 @use 'sass:map'
-@use 'vars' as *
-// Containers
-@mixin container
-  max-width:110rem
-  width:90%
-  margin:0 auto
+@use 'abstracts' as *
+@use 'base/extends' as *
 
-// flexbox
-@mixin flexCol()
-  display: flex
-  //justify-content: center
-  flex-direction: column
-
-@mixin flexRow ($ai: center, $jc: space-between, $w: null)
-  display: flex
-  @if $ai != null
-    align-items: $ai
-  @if $jc != null
-    justify-content: $jc
-  @if $w != null
-    flex-wrap: $w
-
-// Hero Imagess
+// Hero Images
 @mixin bgCover ($image: 'https://picsum.photos/600')
   background: url($image) center center / cover no-repeat
+// BREAKPOINTS
 @mixin breakpoint($key)
   // If the key exists in the map
   @if map-has-key($breakpoints, $key)
@@ -32,6 +14,8 @@
       @content
   @else
     @warn "Unfortunately, no value could be retrieved from `#{$key}`. " + "Available breakpoints are: #{map-keys($breakpoints)}."
+
+// HOVER STATES
 @mixin hover()
   @media (hover: hover) and (pointer: fine)
     @content
@@ -39,4 +23,15 @@
 @mixin no-hover()
   @media (hover: none)
     @content
-  
+
+// MIXTENDS (for using on mediaqueries)
+// use on mediaqueries > @include flex(false). Using without mediaqueries > @include flex
+@mixin flex($extend: true)
+  @if $extend
+    @extend %flex
+  @else
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-between
+    align-items: center
+    gap: 1em
