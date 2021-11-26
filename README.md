@@ -112,7 +112,7 @@ I use the "filters" folder to add svg filters independant of the sprite. In temp
 
 **Template compilation happens when**: you change any pug, svg or json file. After this, a cache cleaner will be triggered (but there's some issues with cache cleaning, probably you need to refresh browser one time for pug files)
 **JSON merge happens when**: You change a json file.
-**Theme compilation happens when**: You change a sass file. After this a cache cleaning is triggered. To make work the cleaning on theme files add "?12672" (any number) to the end of your stylesheet url in index.pug, is already setted this, but if you add new stylesheet take care of this, otherwise cache cleaning won't work.
+**Theme compilation happens when**: You change a sass file. After this a cache cleaning is triggered. To make work the cleaning on theme files add "?cache=12672" (any number) to the end of your stylesheet url in index.pug, is already setted this, but if you add new stylesheet take care of this, otherwise cache cleaning won't work.
 **Scripts merge happens when**: You change a js file which name starts in underscore "_example.js".
 
 You can run all these tasks as once by "gulp" command
