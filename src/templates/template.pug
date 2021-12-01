@@ -1,5 +1,5 @@
 include ./abstracts/_config
-include ./abstracts/_common
+include ./abstracts/_mixins
 doctype html
 html(lang="en").no-js
   head
@@ -9,7 +9,7 @@ html(lang="en").no-js
     if (FONTS.google)
       link(rel="preconnect", href="https://fonts.googleapis.com")
       link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
-      link(rel="stylesheet", href!=`${fontsLink()}`)
+      link(rel="stylesheet", href!=`${FONTS.gFonts}`)
     link(rel="stylesheet", href=`${root}assets/theme.css?cache=123345`)
     script(src=`${root}assets/vendor/modernizr.js`, defer)
     //- script(src=`${root}assets/vendor/jquery-3.6.0.min.js`, defer)

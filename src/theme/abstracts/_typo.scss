@@ -1,1 +1,31 @@
 // add maps for fonts
+$fontStack: (
+  //sans-serif
+  JosefinSans: (
+    family: ('Josefin Sans', sans-serif),
+    styles: (
+      italic: italic,
+      normal: normal
+      ),
+    weights: (
+      thin: 100,
+      extra-light: 200,
+      light: 300,
+      regular: 400,
+      medium: 500,
+      semi-bold: 600,
+      bold: 700
+    )
+  ),
+  //script
+  DancingScript: (
+    family: ('Dancing Script', cursive),
+    weights: (
+      light: 300,
+      regular: 400,
+      medium: 500,
+      semi-bold: 600,
+      bold: 700
+    )
+  )
+)

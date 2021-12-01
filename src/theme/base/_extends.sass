@@ -1,4 +1,5 @@
-@use '../base/vars' as *
+@use '../abstracts' as *
+@use 'vars' as *
 // COMMON TOOLS FOR CONTAINERS
 %container
   max-width:110rem
@@ -21,6 +22,10 @@
   background-color: $color__bg
   &__links
     color: $color__txt
+%fontHeadings
+  @include font(DancingScript)
+%fontBody
+  @include font(JosefinSans)
 // POSITIONING
 %absCenter
   position: absolute

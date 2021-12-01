@@ -4,19 +4,3 @@
   let root = CONFIG.basedir
   let page
   let pageTitle
-
-//- FONTS
--
-  function fontsLink() {
-    let font = FONTS.gFonts
-    let output = 'https://fonts.googleapis.com/css2?'
-    for(let i = 0; i < font.length; i++) {
-      output += `family=${font[i].font}`
-      if(font[i].hasOwnProperty(weight)) {
-        output += `:wght@${font[i].weight}`
-      }
-      output += '&'
-    }
-    output += 'display=swap'
-    return output
-  }
