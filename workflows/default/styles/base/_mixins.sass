@@ -1,0 +1,37 @@
+@use 'sass:map'
+@use 'abstracts' as *
+@use 'base/extends' as *
+
+// Hero Images
+@mixin bgCover ($image: 'https://picsum.photos/600')
+  background: url($image) center center / cover no-repeat
+// BREAKPOINTS
+@mixin breakpoint($key)
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $key)
+    // Prints a media query based on the value
+    @media #{inspect(map-get($breakpoints, $key))}
+      @content
+  @else
+    @warn "Unfortunately, no value could be retrieved from `#{$key}`. " + "Available breakpoints are: #{map-keys($breakpoints)}."
+
+// HOVER STATES
+@mixin hover()
+  @media (hover: hover) and (pointer: fine)
+    @content
+
+@mixin no-hover()
+  @media (hover: none)
+    @content
+
+// MIXTENDS (for using on mediaqueries)
+// use on mediaqueries > @include flex(false). Using without mediaqueries > @include flex
+@mixin flex($extend: true)
+  @if $extend
+    @extend %flex
+  @else
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-between
+    align-items: center
+    gap: 1em

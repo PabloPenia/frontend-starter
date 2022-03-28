@@ -1,0 +1,31 @@
+// Getting colors
+@use 'sass:map'
+@use 'color'
+@use 'typo'
+@function color($color,$tone)
+
+  @if map.has-key(color.$palette,$color)
+    $color: map.get(color.$palette,$color)
+
+    @if map.has-key($color,$tone)
+      $tone: map.get($color,$tone)
+      @return $tone
+
+    @return null
+
+  @return null
+// use:
+// h1
+//   color: color('blue', 'lighter')
+@mixin font($family, $weight: false, $style: false)
+  $fs: typo.$fontStack
+  @if map.has-key($fs, $family)
+
+    font:
+      family: map-get($fs, $family, family)
+
+      @if $style and map.has-key($fs, $family, styles, $style)
+        style: map-get($fs, $family, styles, $style)
+
+      @if $weight and map.has-key($fs, $family, weights, $weight)
+        weight: map-get($fs, $family, weights, $weight)

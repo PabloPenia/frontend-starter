@@ -1,0 +1,71 @@
+// keep scss format for better readability of maps
+// use:
+// h1
+//   color: color('blue', 'lighter')
+$palette: (
+  'red': (
+    'lighter': hsl(0, 100%, 90%),
+    'light': hsl(0, 100%, 70%),
+    'base': hsl(0, 100%, 50%),
+    'dark': hsl(0, 100%, 30%),
+    'darker': hsl(0, 100%, 10%)
+  ),
+  'yellow': (
+    'lighter': hsl(60, 100%, 90%),
+    'light': hsl(60, 100%, 70%),
+    'base': hsl(60, 100%, 50%),
+    'dark': hsl(60, 100%, 30%),
+    'darker': hsl(60, 100%, 10%)
+  ),
+  'green': (
+    'lighter': hsl(120, 100%, 90%),
+    'light': hsl(120, 100%, 70%),
+    'base': hsl(120, 100%, 50%),
+    'dark': hsl(120, 100%, 30%),
+    'darker': hsl(120, 100%, 10%)
+  ),
+  'cyan': (
+    'lighter': hsl(180, 50%, 90%),
+    'light': hsl(180, 50%, 70%),
+    'base': hsl(180, 100%, 50%),
+    'dark': hsl(180, 100%, 30%),
+    'darker': hsl(180, 100%, 10%)
+  ),
+  /* BLUE */
+  'blue': (
+    'lighter': hsl(240, 50%, 90%),
+    'light': hsl(240, 50%, 70%),
+    'base': hsl(240, 50%, 50%),
+    'dark': hsl(240, 50%, 30%),
+    'darker': hsl(240, 50%, 10%)
+  ),
+  'blue-desat': (
+    'lighter': hsl(220, 18%, 90%),
+    'light': hsl(219, 19%, 70%),
+    'base': hsl(219, 19%, 50%),
+    'dark': hsl(219, 19%, 20%),
+    'darker': hsl(220, 18%, 10%),
+    'darkest': hsl(220, 18%, 5%)
+  ),
+  'magenta': (
+    'lighter': hsl(300, 100%, 90%),
+    'light': hsl(300, 100%, 70%),
+    'base': hsl(300, 100%, 50%),
+    'dark': hsl(300, 100%, 30%),
+    'darker': hsl(300, 100%, 10%)
+  ),
+  'black': (
+    'lighter': hsl(219, 20%, 20%),
+    'light': hsl(220, 19%, 16%),
+    'base': hsl(222, 18%, 11%),
+    'dark': hsl(223, 17%, 8%),
+    'darker': hsl(225, 20%, 4%)
+  ),
+  'white': (
+    'lighter': hsl(0, 0%, 96%),
+    'light': hsl(0, 0%, 88%),
+    'base': hsl(0, 0%, 80%),
+    'dark': hsl(0, 0%, 72%),
+    'darker': hsl(0, 0%, 64%)
+  )
+);
