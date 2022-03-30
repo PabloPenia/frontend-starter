@@ -1,19 +1,20 @@
 {
   "name": "frontend-starter",
-  "title": "Sass Pug Starter Kit",
+  "title": "Frontend starter",
   "description": "A basic starter folder and tools for frontend development, including preconfig pug, sass and JSON data",
   "author": {
     "name": "Pablo Peña",
     "url": "https://github.com/pablopenia"
   },
-  "version": "dev 1.0.0",
+  "version": "1.0.0",
   "license": "MIT",
-  "main": "gulpfile.js",
+  "main": "gulpfile.babel.js",
   "scripts": {
-    "start": "gulp process && gulp",
-    "build": "gulp process --prod && gulp build --prod",
+    "start": "gulp",
+    "build": "gulp build --prod",
     "generate": "gulp generate",
-    "process": "gulp process"
+    "tasks": "gulp tasks",
+    "tasks-prod": "gulp tasks --prod"
   },
   "keywords": [
     "sass",

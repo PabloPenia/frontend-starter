@@ -9,17 +9,16 @@ import yargs from 'yargs'
 import babel from 'gulp-babel'
 import terser from 'gulp-terser'
 import concat from 'gulp-concat'
-//sass
+//styles
 import dartSass from 'sass'
 import gulpSass from 'gulp-sass'
 import { init, write } from 'gulp-sourcemaps'
-//postcss
 import autoprefixer from 'autoprefixer'
 import cssnano from 'cssnano'
 import postcss from 'gulp-postcss'
 import postcssNormalize from 'postcss-normalize'
 import purgeCss from 'gulp-purgecss'
-// PUG
+// VIEWS
 import pug from 'gulp-pug'
 // images
 import imagemin from 'gulp-imagemin'
@@ -31,14 +30,10 @@ import merge from 'gulp-merge-json'
 // browser / cache
 import cacheBust from 'gulp-cache-bust'
 import browserSync from 'browser-sync'
-
+// CONFIG
 const PRODUCTION = yargs.argv.prod
 // TODO: add wordpress argv
-// TODO: add copy vendor task
-const CSS_PLUGINS = [postcssNormalize(), autoprefixer(), cssnano()]
-const SASS = gulpSass(dartSass)
 const PUBLIC_ROOT = PRODUCTION ? './dist' : './public'
-const SERVER = browserSync.create()
 const paths = {
   assets: ['./src/vendor/**/*'],
   default: './workflows/default',
@@ -50,23 +45,25 @@ const paths = {
   },
   images: {
     src: './src/images/**/*',
-    dest: '/assets/images',
+    dest: PUBLIC_ROOT + '/assets/images',
   },
   scripts: {
     src: './src/scripts/**/_*.js',
-    dest: '/assets',
+    dest: PUBLIC_ROOT + '/assets',
   },
   svg: './src/svg/**/*.svg',
   theme: {
     src: './src/styles/**/*.{scss,sass}',
-    dest: '/assets',
+    dest: PUBLIC_ROOT + '/assets',
   },
   template: {
     src: './src/templates/pages/!(_)*.pug',
     watch: './src/templates/**/*.pug',
   },
 }
-
+const CSS_PLUGINS = [postcssNormalize(), autoprefixer(), cssnano()]
+const SASS = gulpSass(dartSass)
+const SERVER = browserSync.create()
 const browser = {
   reload: done => {
     SERVER.reload()
@@ -81,17 +78,19 @@ const browser = {
     done()
   },
 }
-//const existe = fs.existsSync('./src')
-const clean = () => {
-  const source = fs.existsSync('./src') ? del(['./public', './dist']) : generate()
-  return source
-}
 export function generate() {
   // TODO: generate wp workflow
   del(['./public', './dist'])
   return src(paths.default + '/**/*', { base: paths.default }).pipe(dest('./src/'))
 }
-const copy = () => src(paths.assets).pipe(dest(PUBLIC_ROOT + paths.scripts.dest))
+const clean = () => {
+  const source = fs.existsSync('./src') ? del(['./public', './dist']) : generate()
+  return source
+}
+const copy = () => src(paths.assets).pipe(dest(paths.scripts.dest))
+
+// file processing tasks
+const compImg = () => src(paths.images.src).pipe(plumber()).pipe(imagemin()).pipe(dest(paths.images.dest))
 function dataMerge() {
   return src(paths.data.src)
     .pipe(
@@ -110,11 +109,34 @@ function dataMerge() {
     )
     .pipe(dest(paths.data.dest))
 }
-const compImg = () => {
-  return src(paths.images.src)
+function scripts() {
+  return src(paths.scripts.src)
     .pipe(plumber())
-    .pipe(imagemin())
-    .pipe(dest(PUBLIC_ROOT + paths.images.dest))
+    .pipe(concat('scripts.min.js'))
+    .pipe(babel())
+    .pipe(terser().on('error', error => console.log(error)))
+    .pipe(dest(paths.scripts.dest))
+}
+function styles() {
+  return src(paths.theme.src)
+    .pipe(plumber())
+    .pipe(gulpIf(!PRODUCTION, init()))
+    .pipe(
+      gulpIf(
+        PRODUCTION,
+        SASS({
+          outputStyle: 'compressed',
+        }).on('error', SASS.logError),
+        SASS({
+          outputStyle: 'expanded',
+        }).on('error', SASS.logError)
+      )
+    )
+    .pipe(postcss(CSS_PLUGINS))
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(gulpIf(!PRODUCTION, write('.')))
+    .pipe(dest(paths.theme.dest))
+    .pipe(browserSync.stream())
 }
 function views() {
   return src(paths.template.src)
@@ -124,34 +146,11 @@ function views() {
     .pipe(gulpIf(!PRODUCTION, cacheBust({ type: 'timestamp' })))
     .pipe(dest(PUBLIC_ROOT))
 }
-function scripts() {
-  return src(paths.scripts.src)
-    .pipe(plumber())
-    .pipe(concat('scripts.min.js'))
-    .pipe(babel())
-    .pipe(terser().on('error', error => console.log(error)))
-    .pipe(dest(PUBLIC_ROOT + paths.scripts.dest))
-}
 
-const styles = () => {
-  return src(paths.theme.src)
-    .pipe(plumber())
-    .pipe(init())
-    .pipe(
-      SASS({
-        outputStyle: 'compressed',
-      }).on('error', SASS.logError)
-    )
-    .pipe(postcss(CSS_PLUGINS))
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(write('.'))
-    .pipe(dest(PUBLIC_ROOT + paths.theme.dest))
-    .pipe(browserSync.stream())
-}
 const cleanCss = () => {
-  return src(PUBLIC_ROOT + paths.theme.dest + '/*.css')
+  return src(paths.theme.dest + '/*.css')
     .pipe(purgeCss({ content: [PUBLIC_ROOT + '/*.html'] }))
-    .pipe(dest(PUBLIC_ROOT + paths.theme.dest))
+    .pipe(dest(paths.theme.dest))
 }
 function watcher() {
   watch(paths.svg, series(views, browser.reload))
@@ -162,6 +161,7 @@ function watcher() {
   watch(paths.template.watch, series(views, browser.reload))
   watch(paths.assets, series(copy, browser.reload))
 }
-exports.process = series(clean, dataMerge, copy, parallel(compImg, scripts, styles, views))
-exports.build = series(cleanCss, browser.serve)
-exports.default = series(browser.serve, watcher)
+
+exports.build = series(clean, dataMerge, copy, parallel(compImg, scripts, styles, views), cleanCss, browser.serve)
+exports.default = series(clean, dataMerge, copy, parallel(compImg, scripts, styles, views), browser.serve, watcher)
+exports.tasks = series(clean, dataMerge, copy, parallel(compImg, scripts, styles, views))
